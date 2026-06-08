@@ -667,7 +667,7 @@ export const createPlay = async (
       },
     });
     playWindow.setAlwaysOnTop(true);
-    const isMuted = settings.get(EMULATOR_MUTED_SETTING_KEY) === true;
+    const isMuted = settings.getSync(EMULATOR_MUTED_SETTING_KEY) === true;
     if (isMuted) {
       playWindow.webContents.setAudioMuted(true);
     }
@@ -689,7 +689,7 @@ export const createPlay = async (
       playWindowTitle = playWindow?.getTitle() ?? "";
       firstLoad = false;
     }
-    const isMuted = settings.get(EMULATOR_MUTED_SETTING_KEY) === true;
+    const isMuted = settings.getSync(EMULATOR_MUTED_SETTING_KEY) === true;
     playWindow?.setTitle(
       playWindowTitle.replace(/ 🔇/, "") + (isMuted ? ` 🔇` : ""),
     );
@@ -1384,7 +1384,7 @@ ipcMain.handle("settings-set", (_, key: string, value: JsonValue) => {
   settings.set(key, value);
 });
 ipcMain.handle("settings-delete", (_, key: string) => {
-  settings.delete(key);
+  settings.unsetSync(key);
 });
 
 ipcMain.handle("app:get-is-full-screen", async () => {
@@ -2527,7 +2527,10 @@ const addRecentProject = (projectPath: string) => {
   settings.set(
     "recentProjects",
     ([] as string[])
-      .concat((settings.get("recentProjects") || []) as string[], projectPath)
+      .concat(
+        (settings.getSync("recentProjects") || []) as string[],
+        projectPath,
+      )
       .reverse()
       .filter(
         (filename: string, index: number, arr: string[]) =>
@@ -2540,7 +2543,7 @@ const addRecentProject = (projectPath: string) => {
 };
 
 const refreshSpellCheck = () => {
-  const spellCheckEnabled = settings.get("checkSpelling") !== false;
+  const spellCheckEnabled = settings.getSync("checkSpelling") !== false;
   if (projectWindow) {
     const session = projectWindow.webContents.session;
     const appLocale = getAppLocale();

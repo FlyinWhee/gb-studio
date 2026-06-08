@@ -235,11 +235,11 @@ const buildMenu = async ({
             {
               label: l10n("MENU_CHECK_SPELLING_WHILE_TYPING"),
               type: "checkbox",
-              checked: settings.get("checkSpelling") !== false,
+              checked: settings.getSync("checkSpelling") !== false,
               click() {
                 notifyListeners(
                   "updateCheckSpelling",
-                  settings.get("checkSpelling") === false,
+                  settings.getSync("checkSpelling") === false,
                 );
               },
             },
@@ -408,7 +408,7 @@ const buildMenu = async ({
               id: "themeDefault",
               label: l10n("MENU_THEME_DEFAULT"),
               type: "checkbox",
-              checked: settings.get(THEME_SETTING_KEY) === undefined,
+              checked: settings.getSync(THEME_SETTING_KEY) === undefined,
               click() {
                 notifyListeners("updateTheme", undefined);
               },
@@ -418,7 +418,7 @@ const buildMenu = async ({
               id: "themeLight",
               label: l10n("MENU_THEME_LIGHT"),
               type: "checkbox",
-              checked: settings.get(THEME_SETTING_KEY) === "light",
+              checked: settings.getSync(THEME_SETTING_KEY) === "light",
               click() {
                 notifyListeners("updateTheme", "light");
               },
@@ -427,7 +427,7 @@ const buildMenu = async ({
               id: "themeDark",
               label: l10n("MENU_THEME_DARK"),
               type: "checkbox",
-              checked: settings.get(THEME_SETTING_KEY) === "dark",
+              checked: settings.getSync(THEME_SETTING_KEY) === "dark",
               click() {
                 notifyListeners("updateTheme", "dark");
               },
@@ -440,7 +440,7 @@ const buildMenu = async ({
                 id: `theme-${theme.id}`,
                 label: theme.name,
                 type: "checkbox",
-                checked: settings.get(THEME_SETTING_KEY) === theme.id,
+                checked: settings.getSync(THEME_SETTING_KEY) === theme.id,
                 click() {
                   notifyListeners("updateTheme", theme.id);
                 },
@@ -456,7 +456,7 @@ const buildMenu = async ({
                 id: "localeDefault",
                 label: l10n("MENU_LANGUAGE_DEFAULT"),
                 type: "checkbox",
-                checked: settings.get(LOCALE_SETTING_KEY) === undefined,
+                checked: settings.getSync(LOCALE_SETTING_KEY) === undefined,
                 click() {
                   notifyListeners("updateLocale", undefined);
                 },
@@ -468,7 +468,7 @@ const buildMenu = async ({
                 id: `locale-${language.id}`,
                 label: language.name,
                 type: "checkbox",
-                checked: settings.get(LOCALE_SETTING_KEY) === language.id,
+                checked: settings.getSync(LOCALE_SETTING_KEY) === language.id,
                 click() {
                   notifyListeners("updateLocale", language.id);
                 },
@@ -482,7 +482,7 @@ const buildMenu = async ({
                 id: `locale-${language.id}`,
                 label: language.name,
                 type: "checkbox",
-                checked: settings.get(LOCALE_SETTING_KEY) === language.id,
+                checked: settings.getSync(LOCALE_SETTING_KEY) === language.id,
                 click() {
                   notifyListeners("updateLocale", language.id);
                 },
@@ -507,7 +507,7 @@ const buildMenu = async ({
               id: "showConnectionsAll",
               label: l10n("MENU_SHOW_CONNECTIONS_ALL"),
               type: "checkbox",
-              checked: settings.get("showConnections") === "all",
+              checked: settings.getSync("showConnections") === "all",
               click() {
                 notifyListeners("updateShowConnections", "all");
               },
@@ -517,8 +517,8 @@ const buildMenu = async ({
               label: l10n("MENU_SHOW_CONNECTIONS_SELECTED"),
               type: "checkbox",
               checked:
-                settings.get("showConnections") === "selected" ||
-                settings.get("showConnections") === true,
+                settings.getSync("showConnections") === "selected" ||
+                settings.getSync("showConnections") === true,
               click() {
                 notifyListeners("updateShowConnections", "selected");
               },
@@ -528,7 +528,7 @@ const buildMenu = async ({
               id: "showConnectionsNone",
               label: l10n("MENU_SHOW_CONNECTIONS_NONE"),
               type: "checkbox",
-              checked: settings.get("showConnections") === false,
+              checked: settings.getSync("showConnections") === false,
               click() {
                 notifyListeners("updateShowConnections", false);
               },
@@ -538,7 +538,7 @@ const buildMenu = async ({
         {
           id: "showNavigator",
           label: l10n("MENU_SHOW_NAVIGATOR"),
-          checked: settings.get("showNavigator") !== false,
+          checked: settings.getSync("showNavigator") !== false,
           type: "checkbox",
           click: (item: MenuItem) => {
             notifyListeners("updateShowNavigator", item.checked);
@@ -551,7 +551,7 @@ const buildMenu = async ({
               id: "showSceneScreenGridTopLeft",
               label: l10n("MENU_SHOW_SCREEN_GRID_TOP_LEFT"),
               type: "checkbox",
-              checked: settings.get("showSceneScreenGrid") === "topLeft",
+              checked: settings.getSync("showSceneScreenGrid") === "topLeft",
               click() {
                 notifyListeners("updateShowSceneScreenGrid", "topLeft");
               },
@@ -560,7 +560,7 @@ const buildMenu = async ({
               id: "showSceneScreenGridTopRight",
               label: l10n("MENU_SHOW_SCREEN_GRID_TOP_RIGHT"),
               type: "checkbox",
-              checked: settings.get("showSceneScreenGrid") === "topRight",
+              checked: settings.getSync("showSceneScreenGrid") === "topRight",
               click() {
                 notifyListeners("updateShowSceneScreenGrid", "topRight");
               },
@@ -569,7 +569,7 @@ const buildMenu = async ({
               id: "showSceneScreenGridBottomLeft",
               label: l10n("MENU_SHOW_SCREEN_GRID_BOTTOM_LEFT"),
               type: "checkbox",
-              checked: settings.get("showSceneScreenGrid") === "bottomLeft",
+              checked: settings.getSync("showSceneScreenGrid") === "bottomLeft",
               click() {
                 notifyListeners("updateShowSceneScreenGrid", "bottomLeft");
               },
@@ -578,7 +578,8 @@ const buildMenu = async ({
               id: "showSceneScreenGridBottomRight",
               label: l10n("MENU_SHOW_SCREEN_GRID_BOTTOM_RIGHT"),
               type: "checkbox",
-              checked: settings.get("showSceneScreenGrid") === "bottomRight",
+              checked:
+                settings.getSync("showSceneScreenGrid") === "bottomRight",
               click() {
                 notifyListeners("updateShowSceneScreenGrid", "bottomRight");
               },
@@ -588,7 +589,7 @@ const buildMenu = async ({
               id: "showSceneScreenGridNone",
               label: l10n("MENU_SHOW_SCREEN_GRID_NONE"),
               type: "checkbox",
-              checked: settings.get("showSceneScreenGrid") === false,
+              checked: settings.getSync("showSceneScreenGrid") === false,
               click() {
                 notifyListeners("updateShowSceneScreenGrid", false);
               },
@@ -637,7 +638,7 @@ const buildMenu = async ({
             {
               label: l10n("MENU_MUTE_AUDIO"),
               type: "checkbox",
-              checked: settings.get(EMULATOR_MUTED_SETTING_KEY) === true,
+              checked: settings.getSync(EMULATOR_MUTED_SETTING_KEY) === true,
               click: (item: MenuItem) => {
                 notifyListeners("updateEmulatorMuted", item.checked);
               },
@@ -750,7 +751,7 @@ const buildMenu = async ({
           {
             label: l10n("MENU_MUTE_AUDIO"),
             type: "checkbox",
-            checked: settings.get(EMULATOR_MUTED_SETTING_KEY) === true,
+            checked: settings.getSync(EMULATOR_MUTED_SETTING_KEY) === true,
             click: (item: MenuItem) => {
               notifyListeners("updateEmulatorMuted", item.checked);
             },

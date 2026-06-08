@@ -83,9 +83,9 @@ module.exports = async () => {
         entitlements: "./entitlements.plist",
       },
     },
-    hooks: {
-      postPackage: require("../../../src/lib/forge/hooks/notarize"),
-    },
+    // hooks: {
+    //   postPackage: require("../../../src/lib/forge/hooks/notarize"),
+    // },
     plugins: [
       {
         name: "@electron-forge/plugin-auto-unpack-natives",
