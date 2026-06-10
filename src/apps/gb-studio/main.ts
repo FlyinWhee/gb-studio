@@ -891,7 +891,8 @@ ipcMain.handle("project:open-project-picker", async (_event, _arg) => {
 ipcMain.handle(
   "get-recent-projects",
   async (): Promise<RecentProjectData[]> => {
-    const recentProjects = settings.get("recentProjects");
+    console.log("Getting recent projects");
+    const recentProjects = settings.getSync("recentProjects");
     if (!isStringArray(recentProjects)) return [];
     return recentProjects.map((path) => {
       return {
@@ -904,11 +905,11 @@ ipcMain.handle(
 );
 
 const removeRecentProject = (removePath: string) => {
-  const recentProjects = settings.get("recentProjects");
+  const recentProjects = settings.getSync("recentProjects");
   const newRecents = isStringArray(recentProjects)
     ? recentProjects.filter((path) => path !== removePath)
     : [];
-  settings.set("recentProjects", newRecents);
+  settings.setSync("recentProjects", newRecents);
   // Rebuild OS level recent projects
   app.clearRecentDocuments();
   newRecents
@@ -920,7 +921,7 @@ const removeRecentProject = (removePath: string) => {
 };
 
 ipcMain.handle("clear-recent-projects", async (_event) => {
-  settings.set("recentProjects", []);
+  settings.setSync("recentProjects", []);
   app.clearRecentDocuments();
 });
 
@@ -953,7 +954,7 @@ ipcMain.handle("open-image", async (_event, assetPath) => {
   // Check project has permission to access this asset
   guardAssetWithinProject(filename, projectRoot);
 
-  const app = String(settings.get("imageEditorPath") || "") || undefined;
+  const app = String(settings.getSync("imageEditorPath") || "") || undefined;
   open(filename, { app });
 });
 
@@ -966,7 +967,7 @@ ipcMain.handle("open-mod", async (_event, assetPath) => {
   // Check project has permission to access this asset
   guardAssetWithinProject(filename, projectRoot);
 
-  const app = String(settings.get("musicEditorPath") || "") || undefined;
+  const app = String(settings.getSync("musicEditorPath") || "") || undefined;
   open(filename, { app });
 });
 
@@ -1260,12 +1261,12 @@ ipcMain.handle(
 );
 
 ipcMain.handle("set-ui-scale", (_, scale: number) => {
-  settings.set("zoomLevel", scale);
+  settings.setSync("zoomLevel", scale);
   sendToProjectWindow("setting:ui-scale:changed", scale);
 });
 
 ipcMain.handle("set-tracker-keybindings", (_, value: number) => {
-  settings.set("trackerKeyBindings", value);
+  settings.setSync("trackerKeyBindings", value);
   sendToProjectWindow("setting:tracker-keybindings:changed", value);
 });
 
@@ -1377,13 +1378,13 @@ ipcMain.handle("debugger:set-watched", (_event, variableIds: string[]) => {
 ipcMain.handle("get-l10n-strings", () => getL10NData());
 
 ipcMain.handle("get-theme", () => {
-  const themeId = ensureString(settings.get(THEME_SETTING_KEY), "");
+  const themeId = ensureString(settings.getSync(THEME_SETTING_KEY), "");
   return themeManager.getTheme(themeId, nativeTheme.shouldUseDarkColors);
 });
 
 ipcMain.handle("settings-get", (_, key: string) => settings.get(key));
 ipcMain.handle("settings-set", (_, key: string, value: JsonValue) => {
-  settings.set(key, value);
+  settings.setSync(key, value);
 });
 ipcMain.handle("settings-delete", (_, key: string) => {
   settings.unsetSync(key);
@@ -2298,7 +2299,7 @@ menu.on("projectPlugins", () => {
 
 menu.on("updateTheme", (value) => {
   const pluginThemes = themeManager.getPluginThemes();
-  settings.set(THEME_SETTING_KEY, value as JsonValue);
+  settings.setSync(THEME_SETTING_KEY, value as JsonValue);
   setMenuItemChecked("themeDefault", value === undefined);
   setMenuItemChecked("themeLight", value === "light");
   setMenuItemChecked("themeDark", value === "dark");
@@ -2319,7 +2320,7 @@ menu.on("selectMidiInput", (value) => {
 });
 
 menu.on("updateLocale", (value) => {
-  settings.set(LOCALE_SETTING_KEY, value as JsonValue);
+  settings.setSync(LOCALE_SETTING_KEY, value as JsonValue);
   setMenuItemChecked("localeDefault", value === undefined);
   for (const lang of l10nManager.getSystemL10Ns()) {
     setMenuItemChecked(`locale-${lang.id}`, value === lang.id);
@@ -2333,36 +2334,36 @@ menu.on("updateLocale", (value) => {
 });
 
 menu.on("updateCheckSpelling", (value) => {
-  settings.set("checkSpelling", value as JsonValue);
+  settings.setSync("checkSpelling", value as JsonValue);
   setMenuItemChecked("checkSpelling", value !== false);
   refreshSpellCheck();
 });
 
 menu.on("updateShowCollisions", (value) => {
-  settings.set("showCollisions", value as JsonValue);
+  settings.setSync("showCollisions", value as JsonValue);
   sendToProjectWindow("setting:changed", "showCollisions", value);
 });
 
 menu.on("updateShowConnections", (value) => {
-  settings.set("showConnections", value as JsonValue);
+  settings.setSync("showConnections", value as JsonValue);
   refreshShowConnectionsMenuItems(value);
   sendToProjectWindow("setting:changed", "showConnections", value);
 });
 
 menu.on("updateShowNavigator", (value) => {
-  settings.set("showNavigator", value as JsonValue);
+  settings.setSync("showNavigator", value as JsonValue);
   sendToProjectWindow("setting:changed", "showNavigator", value);
 });
 
 menu.on("updateShowSceneScreenGrid", (value) => {
-  settings.set("showSceneScreenGrid", value as JsonValue);
+  settings.setSync("showSceneScreenGrid", value as JsonValue);
   refreshScreenGridMenuItems(value);
   sendToProjectWindow("setting:changed", "showSceneScreenGrid", value);
 });
 
 menu.on("updateEmulatorMuted", (value) => {
   const isMuted = value === true;
-  settings.set(EMULATOR_MUTED_SETTING_KEY, isMuted);
+  settings.setSync(EMULATOR_MUTED_SETTING_KEY, isMuted);
   if (playWindow) {
     playWindow.webContents.setAudioMuted(isMuted);
     playWindow?.setTitle(
@@ -2405,7 +2406,7 @@ watchGlobalPlugins({
 });
 
 const refreshTheme = () => {
-  const themeId = ensureString(settings.get(THEME_SETTING_KEY), "");
+  const themeId = ensureString(settings.getSync(THEME_SETTING_KEY), "");
   const theme = themeManager.getTheme(themeId, nativeTheme.shouldUseDarkColors);
   sendToSplashWindow("update-theme", theme);
   sendToProjectWindow("update-theme", theme);
@@ -2526,7 +2527,7 @@ const openProject = async (newProjectPath: string): Promise<boolean> => {
 
 const addRecentProject = (projectPath: string) => {
   // Store recent projects
-  settings.set(
+  settings.setSync(
     "recentProjects",
     ([] as string[])
       .concat(
