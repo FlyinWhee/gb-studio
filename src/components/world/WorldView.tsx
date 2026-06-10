@@ -41,6 +41,7 @@ import useResizeObserver from "ui/hooks/use-resize-observer";
 import NoteView from "components/world/NoteView";
 import renderWorldContextMenu from "components/world/renderWorldContextMenu";
 import { useContextMenu } from "ui/hooks/use-context-menu";
+import { useSelectAllShortcut } from "ui/hooks/use-select-all";
 
 const MOUSE_ZOOM_SPEED = 0.5;
 
@@ -564,18 +565,19 @@ const WorldView = () => {
 
   //#region Keyboard handling
 
-  const onSelectAllWorldEntities = useCallback(() => {
+  const onSelectAll = useCallback(() => {
     dispatch(editorActions.setSceneSelectionIds([...sceneIds, ...noteIds]));
   }, [dispatch, sceneIds, noteIds]);
+
+  useSelectAllShortcut({
+    onSelectAll,
+  });
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (!(e.target instanceof HTMLElement)) return;
       if (e.target.nodeName !== "BODY") {
         return;
-      }
-      if ((e.ctrlKey || e.metaKey) && e.code === "KeyA") {
-        return onSelectAllWorldEntities();
       }
       if (e.ctrlKey || e.metaKey) {
         return;
@@ -588,7 +590,7 @@ const WorldView = () => {
         dispatch(entitiesActions.removeSelectedEntity());
       }
     },
-    [dispatch, focus, onSelectAllWorldEntities],
+    [dispatch, focus],
   );
 
   const onKeyUp = useCallback(

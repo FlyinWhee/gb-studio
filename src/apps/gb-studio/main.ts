@@ -2250,6 +2250,20 @@ menu.on("pasteInPlace", () => {
   sendToProjectWindow("menu:paste-in-place");
 });
 
+menu.on("selectAll", () => {
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+
+  if (!focusedWindow) {
+    return;
+  }
+
+  if (focusedWindow === projectWindow) {
+    sendToProjectWindow("menu:select-all");
+  } else {
+    focusedWindow.webContents.selectAll();
+  }
+});
+
 menu.on("checkUpdates", () => {
   checkForUpdate(true);
 });
