@@ -82,10 +82,14 @@ module.exports = async () => {
         "hardened-runtime": true,
         entitlements: "./entitlements.plist",
       },
+      osxNotarize: process.env.APPLE_ID
+        ? {
+            appleId: process.env.APPLE_ID,
+            appleIdPassword: process.env.APPLE_ID_PASSWORD,
+            teamId: process.env.APPLE_TEAM_ID,
+          }
+        : undefined,
     },
-    // hooks: {
-    //   postPackage: require("../../../src/lib/forge/hooks/notarize"),
-    // },
     plugins: [
       {
         name: "@electron-forge/plugin-auto-unpack-natives",
