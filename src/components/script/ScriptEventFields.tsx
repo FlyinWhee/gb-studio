@@ -37,6 +37,7 @@ interface ScriptEventFieldsProps {
   renderEvents: (key: string, label: string) => React.ReactNode;
   fields: ScriptEventFieldSchema[];
   value: Record<string, unknown> | undefined;
+  compact?: boolean;
 }
 
 const genKey = (id: string, key: string, index: number) =>
@@ -103,6 +104,7 @@ const ScriptEventFields = ({
   renderEvents,
   fields,
   value,
+  compact,
 }: ScriptEventFieldsProps) => {
   const context = useContext(ScriptEditorContext);
 
@@ -127,6 +129,16 @@ const ScriptEventFields = ({
         if (
           value &&
           !isFieldVisible(field, value, context, scene, soundsLookup)
+        ) {
+          return null;
+        }
+
+        // In compact mode, only render events/group/collapsable fields
+        if (
+          compact &&
+          field.type !== "events" &&
+          field.type !== "group" &&
+          field.type !== "collapsable"
         ) {
           return null;
         }
@@ -178,6 +190,7 @@ const ScriptEventFields = ({
                 parentId={parentId}
                 parentKey={parentKey}
                 parentType={parentType}
+                compact={compact}
               />
             </ScriptEventFieldGroup>
           );
@@ -213,6 +226,7 @@ const ScriptEventFields = ({
                   parentId={parentId}
                   parentKey={parentKey}
                   parentType={parentType}
+                  compact={compact}
                 />
               )}
             </ScriptEventBranchHeader>

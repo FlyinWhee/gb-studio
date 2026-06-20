@@ -1743,6 +1743,8 @@
   "MENU_ENABLE_EVENT": "Activer l’événement",
   "MENU_DISABLE_EVENTS": "Désactiver les événements",
   "MENU_ENABLE_EVENTS": "Activer les événements",
+  "MENU_COMPACT_EVENT": "Compacter",
+  "MENU_EXPAND_EVENT": "Décompacter",
   "MENU_DISABLE_ELSE": "Désactiver la section sinon",
   "MENU_ENABLE_ELSE": "Activer la section sinon",
   "MENU_PASTE_VALUES": "Coller les valeurs",

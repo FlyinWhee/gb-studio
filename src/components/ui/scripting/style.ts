@@ -255,11 +255,15 @@ export const StyledScriptEventHeader = styled.div<StyledScriptEventHeaderProps>`
 
 interface StyledScriptEventHeaderCaretProps {
   $isOpen?: boolean;
+  $isCompact?: boolean;
 }
 
 export const StyledScriptEventHeaderCaret = styled.div<StyledScriptEventHeaderCaretProps>`
   svg {
-    fill: ${(props) => props.theme.colors.scripting.header.text};
+    fill: ${(props) =>
+      props.$isCompact
+        ? props.theme.colors.highlight
+        : props.theme.colors.scripting.header.text};
     width: 8px;
     height: 8px;
     flex-shrink: 0;

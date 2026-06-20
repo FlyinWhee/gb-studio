@@ -4532,7 +4532,45 @@ const toggleScriptEventOpen: CaseReducer<
   if (!scriptEvent || !scriptEvent.args) {
     return;
   }
+  // If compact, header click always clears compact and forces open in one click
+  if (scriptEvent.args.__compact) {
+    scriptEvent.args.__compact = false;
+    scriptEvent.args.__collapse = false;
+    return;
+  }
   scriptEvent.args.__collapse = !scriptEvent.args.__collapse;
+};
+
+const toggleScriptEventCompact: CaseReducer<
+  EntitiesState,
+  PayloadAction<{
+    scriptEventId: string;
+  }>
+> = (state, action) => {
+  const scriptEvent = state.scriptEvents.entities[action.payload.scriptEventId];
+  if (!scriptEvent || !scriptEvent.args) {
+    return;
+  }
+  const newValue = !scriptEvent.args.__compact;
+  const applyRecursive = (eventId: string) => {
+    const event = state.scriptEvents.entities[eventId];
+    if (!event || !event.args) return;
+    const hasChildren =
+      event.children && Object.keys(event.children).length > 0;
+    if (hasChildren) {
+      event.args.__compact = newValue;
+    } else {
+      event.args.__collapse = newValue;
+    }
+    if (event.children) {
+      for (const childIds of Object.values(event.children)) {
+        for (const childId of childIds) {
+          applyRecursive(childId);
+        }
+      }
+    }
+  };
+  applyRecursive(action.payload.scriptEventId);
 };
 
 const toggleScriptEventComment: CaseReducer<
@@ -5411,6 +5449,7 @@ const entitiesSlice = createSlice({
     removeScriptEventPresetReferences,
     resetScript,
     toggleScriptEventOpen,
+    toggleScriptEventCompact,
     toggleScriptEventComment,
     toggleScriptEventDisableElse,
     editScriptEventArg,

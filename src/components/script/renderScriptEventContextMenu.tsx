@@ -33,6 +33,9 @@ interface ScriptEventContextMenuProps {
   parentKey: string;
   isDisabled?: boolean;
   hasElse?: boolean;
+  hasChildren?: boolean;
+  isOpen?: boolean;
+  isCompact?: boolean;
   hasOverride: boolean;
   disabledElse?: boolean;
   clipboardFormat?: ClipboardFormat;
@@ -57,6 +60,9 @@ const renderScriptEventContextMenu = ({
   parentKey,
   isDisabled,
   hasElse,
+  hasChildren,
+  isOpen,
+  isCompact,
   hasOverride,
   disabledElse,
   clipboardFormat,
@@ -161,6 +167,23 @@ const renderScriptEventContextMenu = ({
       )}
       <MenuAccelerator accelerator="CommandOrControl+/" />
     </MenuItem>,
+
+    ...(hasChildren && isOpen
+      ? [
+          <MenuItem
+            key="compact"
+            onClick={() => {
+              dispatch(
+                entitiesActions.toggleScriptEventCompact({ scriptEventId }),
+              );
+            }}
+          >
+            {isCompact
+              ? l10n("MENU_EXPAND_EVENT")
+              : l10n("MENU_COMPACT_EVENT")}
+          </MenuItem>,
+        ]
+      : []),
 
     ...(hasElse
       ? [

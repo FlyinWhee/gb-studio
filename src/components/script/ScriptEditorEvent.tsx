@@ -304,7 +304,11 @@ const ScriptEditorEvent = React.memo(
         ? scriptEvent.args.__label
         : isComment && scriptEvent?.args?.text) || undefined;
     const isOpen = (scriptEvent?.args && !scriptEvent.args.__collapse) ?? false;
+    const isCompact = (scriptEvent?.args && !!scriptEvent.args.__compact) ?? false;
     const isConditional = scriptEventDefs[command]?.isConditional ?? false;
+    const hasChildren = !!(
+      scriptEvent?.children && Object.keys(scriptEvent.children).length > 0
+    );
     const editableSymbol = scriptEventDefs[command]?.editableSymbol ?? false;
     const description = scriptEventDefs[command]?.description;
 
@@ -369,6 +373,9 @@ const ScriptEditorEvent = React.memo(
               breakpointEnabled,
               isDisabled,
               hasElse,
+              hasChildren,
+              isOpen,
+              isCompact,
               hasOverride: !!overrides,
               disabledElse: !!disabledElse,
               clipboardFormat,
@@ -391,6 +398,9 @@ const ScriptEditorEvent = React.memo(
         dispatch,
         editableSymbol,
         hasElse,
+        hasChildren,
+        isOpen,
+        isCompact,
         onApplyOverrides,
         onOpenAddMenu,
         onRevertOverrides,
@@ -431,10 +441,11 @@ const ScriptEditorEvent = React.memo(
             parentId={id}
             parentKey={key}
             scriptEvent={scriptEvent}
+            compact={isCompact}
           />
         );
       },
-      [nestLevel, scriptEvent, id, entityId],
+      [nestLevel, scriptEvent, id, entityId, isCompact],
     );
 
     const onMouseEnter = useCallback(() => {
@@ -505,6 +516,7 @@ const ScriptEditorEvent = React.memo(
               nestLevel={nestLevel}
               altBg={index % 2 === 0}
               isOpen={isOpen}
+              isCompact={isCompact}
               isSelected={scriptEventSelectionIds.includes(scriptEvent.id)}
               isExecuting={isExecuting}
               isBreakpoint={breakpointEnabled}
@@ -564,6 +576,7 @@ const ScriptEditorEvent = React.memo(
                 parentId={parentId}
                 parentKey={parentKey}
                 parentType={parentType}
+                compact={isCompact}
               />
             </ScriptEventFormWrapper>
           )}

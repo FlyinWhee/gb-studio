@@ -1957,6 +1957,8 @@
   "MENU_ENABLE_EVENT": "Enable Event",
   "MENU_DISABLE_EVENTS": "Disable Events",
   "MENU_ENABLE_EVENTS": "Enable Events",
+  "MENU_COMPACT_EVENT": "Compact View",
+  "MENU_EXPAND_EVENT": "Expand View",
   "MENU_DISABLE_ELSE": "Disable Else",
   "MENU_ENABLE_ELSE": "Enable Else",
   "MENU_PASTE_VALUES": "Paste Values",

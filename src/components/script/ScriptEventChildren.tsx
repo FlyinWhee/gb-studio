@@ -13,6 +13,7 @@ interface ScriptEventChildrenProps {
   parentId: string;
   parentKey: string;
   scriptEvent?: ScriptEventNormalized;
+  compact?: boolean;
 }
 
 export const ScriptEventChildren = ({
@@ -22,6 +23,7 @@ export const ScriptEventChildren = ({
   parentId,
   parentKey,
   scriptEvent,
+  compact,
 }: ScriptEventChildrenProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref);
@@ -53,13 +55,15 @@ export const ScriptEventChildren = ({
           entityId={entityId}
         />
       ))}
-      <AddButton
-        parentType="scriptEvent"
-        parentId={parentId}
-        parentKey={parentKey}
-        nestLevel={nestLevel}
-        conditional={true}
-      />
+      {!compact && (
+        <AddButton
+          parentType="scriptEvent"
+          parentId={parentId}
+          parentKey={parentKey}
+          nestLevel={nestLevel}
+          conditional={true}
+        />
+      )}
     </ScriptEditorChildren>
   );
 };

@@ -47,6 +47,7 @@ interface ScriptEventHeaderProps {
   isMoveable?: boolean;
   isMultiSelectable?: boolean;
   isOpen: boolean;
+  isCompact?: boolean;
   isBreakpoint?: boolean;
   altBg?: boolean;
   breakpointTitle?: string;
@@ -105,6 +106,7 @@ export const ScriptEventHeader = forwardRef<
       isMoveable = true,
       isMultiSelectable,
       isOpen,
+      isCompact,
       altBg,
       isBreakpoint,
       breakpointTitle,
@@ -138,7 +140,7 @@ export const ScriptEventHeader = forwardRef<
         >
           <PreventDrag>
             {!isComment && !isDisabled ? (
-              <StyledScriptEventHeaderCaret $isOpen={isOpen}>
+              <StyledScriptEventHeaderCaret $isOpen={isOpen} $isCompact={isCompact}>
                 <ArrowIcon />
               </StyledScriptEventHeaderCaret>
             ) : (

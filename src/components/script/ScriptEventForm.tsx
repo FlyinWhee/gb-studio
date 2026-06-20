@@ -20,6 +20,7 @@ interface ScriptEventFormProps {
   nestLevel: number;
   altBg: boolean;
   renderEvents: (key: string, label: string) => React.ReactNode;
+  compact?: boolean;
 }
 
 const getScriptEventFields = (
@@ -88,6 +89,7 @@ const ScriptEventForm = ({
   nestLevel,
   altBg,
   renderEvents,
+  compact,
 }: ScriptEventFormProps) => {
   const scriptEventDefs = useAppSelector((state) =>
     selectScriptEventDefs(state),
@@ -126,6 +128,7 @@ const ScriptEventForm = ({
       renderEvents={renderEvents}
       fields={fields}
       value={value}
+      compact={compact}
     />
   );
 };
